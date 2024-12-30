@@ -1,9 +1,9 @@
 import click
 import config
 import uuid
-from best3min import app, db
+from best3minapp import app, db
 import exchange.angel as angel
-from best3min.models.model import Options, Orders, Balance, TradeSettings, DciEarnings, TradePnl, Loss, Indexes
+from best3minapp.models.model import Options, Orders, Balance, TradeSettings, DciEarnings, TradePnl, Loss, Indexes
 import time
 import alert.discord as discord
 import math

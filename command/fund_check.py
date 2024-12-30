@@ -1,6 +1,6 @@
 
 import click
-from best3min import app, db
+from best3minapp import app, db
 import exchange.angel as angel
 
 

@@ -1,7 +1,7 @@
-from best3min import app, db
+from best3minapp import app, db
 import click
 from flask.cli import with_appcontext
-from best3min.models.model import TradeSettings, Indexes, LastRun, Loss, Orders, DciEarnings
+from best3minapp.models.model import TradeSettings, Indexes, LastRun, Loss, Orders, DciEarnings
 from command.tokens import fetch_option_token, update_near_token
 import exchange.angel as angel
 import math

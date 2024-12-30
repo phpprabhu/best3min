@@ -1,4 +1,4 @@
-from best3min import app, db
+from best3minapp import app, db
 from flask import flash, render_template, url_for, redirect, request, jsonify
 
 import json

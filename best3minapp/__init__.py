@@ -15,7 +15,7 @@ with app.app_context():
     engine.connect_args = {'timeout': 10}
 
 
-from best3min.frontend import routes
+from best3minapp.frontend import routes
 import command.create_db
 import command.tokens
 import command.entry

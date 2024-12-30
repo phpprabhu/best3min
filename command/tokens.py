@@ -2,9 +2,9 @@ import click
 import config
 import pandas as pd
 import urllib.request
-from best3min import app, db
+from best3minapp import app, db
 import exchange.angel as angel
-from best3min.models.model import Options, LastRun, Balance, Indexes
+from best3minapp.models.model import Options, LastRun, Balance, Indexes
 from datetime import datetime, timedelta, date
 import math
 import json

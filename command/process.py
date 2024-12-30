@@ -1,9 +1,9 @@
 import click
 import config
 import schedule
-from best3min import app, db
+from best3minapp import app, db
 import exchange.angel as angel
-from best3min.models.model import Indexes, Options, Orders, OptionCircuit, LastRun, Balance, TradeSettings, \
+from best3minapp.models.model import Indexes, Options, Orders, OptionCircuit, LastRun, Balance, TradeSettings, \
     TradePnl, Loss, DciEarnings
 import time
 from datetime import datetime, timedelta, date

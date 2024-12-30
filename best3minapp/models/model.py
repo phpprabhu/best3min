@@ -1,4 +1,4 @@
-from best3min import db
+from best3minapp import db
 from datetime import datetime
 
 
