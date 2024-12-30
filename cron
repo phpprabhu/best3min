@@ -1,0 +1,24 @@
+scp root@172.105.47.214:/root/best3min/best3minapp/best3min.db best3min-live.db
+
+
+nohup flask start_processing > log/process.log 2>&1 & echo $! > process/check.pid
+
+
+# Fantastic Five
+# ======================
+# everyday thrice flask fetch_option_token [morning & 3:40]
+40 3 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask fetch_option_token >> /root/best3min/log/fetch_option_token.log 2>&1
+40 6 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask fetch_option_token >> /root/best3min/log/fetch_option_token.log 2>&1
+10 10 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask fetch_option_token >> /root/best3min/log/fetch_option_token.log 2>&1
+
+# flask update_near_token -> every 5 mins
+#*/5 3-10 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask update_near_token >> /root/best3min/log/update_near_token.log 2>&1
+
+# flask check_exit -> every 1 min starting at 9:20 AM
+50-59 3 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask check_exit >> /root/best3min/log/check_exit.log 2>&1
+*/1 4-10 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask check_exit >> /root/best3min/log/check_exit.log 2>&1
+
+# flask check_entry -> every 1 min starting at 9:20 AM
+50-59 3 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask check_entry >> /root/best3min/log/check_entry.log 2>&1
+*/1 4-10 * * 1-5 cd /root/best3min/ && export FLASK_APP=app.py && flask check_entry >> /root/best3min/log/check_entry.log 2>&1
+

@@ -1,0 +1,15 @@
+scp root@172.105.47.214:/root/expiryprofittaker/expiryprofittakerapp/expiryprofittaker.db expiryprofittaker-live.db
+scp optiondci-live.db root@172.105.47.214:/root/expiryprofittaker/expiryprofittakerapp/expiryprofittaker.db
+
+pip install --upgrade smartapi-python
+smartapi-python==1.4.9
+smartapi-python==1.3.5
+
+pip install smartapi-python==1.3.5
+
+sudo apt install python3-flask-sqlalchemy
+sudo apt install python3-pandas
+
+
+python3 -m venv myenv
+source myenv/bin/activate

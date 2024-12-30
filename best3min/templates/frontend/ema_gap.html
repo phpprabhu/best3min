@@ -1,0 +1,38 @@
+{% block content %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">
+        Coin
+      </th>
+      <th scope="col">EMA 50</th>
+      <th scope="col">EMA 20</th>
+      <th scope="col">Pre Long</th>
+      <th scope="col">Pre Short</th>
+      <th scope="col">Long</th>
+      <th scope="col">Short</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for coin in coins %}
+    <tr>
+      <td>
+        {{ coin.symbol }}
+      </td>
+      <td>{{ coin.ema_50 }}</td>
+      <td>{{ coin.ema_20 }}</td>
+      <td>
+        <button hx-post="/order/long/{{ coin.symbol | replace('/', '_') }}" hx-vals='{"ema": {{ ema }},"timeframe": "{{ timeframe }}","prepare":1,"side":"long"}' type="button" class="btn btn-success"><i class="bi  bi-arrow-down-square"></i></button>
+        <button hx-post="/order/long/{{ coin.symbol | replace('/', '_') }}" hx-vals='{"ema": {{ ema }},"timeframe": "{{ timeframe }}","prepare":1,"side":"long"}' type="button" class="btn btn-success"><i class="bi  bi-arrow-up-square"></i></button>
+      </td>
+      <td>
+        <button hx-post="/order/long/{{ coin.symbol | replace('/', '_') }}" hx-vals='{"ema": {{ ema }},"timeframe": "{{ timeframe }}","prepare":1,"side":"short"}' type="button" class="btn btn-danger"><i class="bi  bi-arrow-up-square"></i></button>
+        <button hx-post="/order/long/{{ coin.symbol | replace('/', '_') }}" hx-vals='{"ema": {{ ema }},"timeframe": "{{ timeframe }}","prepare":1,"side":"short"}' type="button" class="btn btn-danger"><i class="bi  bi-arrow-down-square"></i></button>
+      </td>
+      <td><button hx-post="/order/long/{{ coin.symbol | replace('/', '_') }}" hx-vals='{"ema": {{ ema }},"timeframe": "{{ timeframe }}","prepare":0,"side":"long"}' type="button" class="btn btn-success">Long</button></td>
+      <td><button hx-post="/order/short/{{ coin.symbol | replace('/', '_') }}" hx-vals='{"ema": {{ ema }},"timeframe": "{{ timeframe }}","prepare":0,"side":"short"}' type="button" class="btn btn-danger">Short</button></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
