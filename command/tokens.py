@@ -13,8 +13,8 @@ import helper.date_ist as date_ist
 
 @click.command(name='fetch_option_token')
 def fetch_option_token():
-    # if str(date.today()) in config.HOLIDAYS:
-    #     exit()
+    if str(date.today()) in config.HOLIDAYS:
+        exit()
 
     angel_obj = angel.get_angel_obj()
     timeframe = '3m'
