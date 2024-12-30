@@ -64,3 +64,50 @@ sudo systemctl status best3min_check_entry.service
 
 
 /root/best3min/best3min_check_entry.sh
+
+
+
+
+
+
+/etc/systemd/system/best3min_check_exit.service
+best3min_check_exit.service
+
+
+[Unit]
+Description=Run Best3Min check_exit Command
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/best3min/best3min_check_exit.sh
+
+
+
+/etc/systemd/system/best3min_check_exit.timer
+best3min_check_exit.timer
+
+
+[Unit]
+Description=Run Best3Min best3min_check_exit Command Every 10 Seconds (Weekdays Only)
+
+[Timer]
+OnBootSec=10s
+OnUnitActiveSec=10s
+
+[Install]
+WantedBy=timers.target
+
+
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable best3min_check_exit.timer
+sudo systemctl start best3min_check_exit.timer
+
+
+sudo systemctl status best3min_check_exit.timer
+sudo systemctl status best3min_check_exit.service
+
+
+/root/best3min/best3min_check_exit.sh

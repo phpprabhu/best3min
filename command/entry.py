@@ -77,6 +77,32 @@ def check_entry():
                 process_option_trade(angel_obj, index, atm_strike, 'PE')
 
 
+def reenter_opposite_direction(option_type):
+    index = Indexes.query.filter_by(enabled=True).first()
+    in_trade_option = Options.query.filter_by(in_trade=True, name=index.name).filter(
+        Options.instrument_type.in_(['PE', 'CE'])).first()
+    if not in_trade_option:
+        today = date.today()
+        order_count = Orders.query.filter_by(order_type="MAIN", status='COMPLETE').filter(
+            Orders.created >= datetime.combine(today, datetime.min.time())).count()
+        if order_count >= 3:
+            return
+        print('Fetching options of index: ' + index.name)
+        angel_obj = angel.get_angel_obj()
+        df_index = angel.get_3min_olhcv(angel_obj, index)
+        atm_strike = round_to_nearest(df_index.iloc[-1]['close'], index.option_sizing)
+
+        print(df_index)
+
+        if option_type == 'CE':
+            print('Reenter Opp trade - CE Trade')
+            process_option_trade(angel_obj, index, atm_strike, 'CE')
+
+        if option_type == 'PE':
+            print('Reenter Opp trade - PE Trade')
+            process_option_trade(angel_obj, index, atm_strike, 'PE')
+
+
 def process_option_trade(angel_obj, index, strike, option_type):
     in_trade_option = Options.query.filter_by(in_trade=True, name=index.name).filter(
         Options.instrument_type.in_(['PE', 'CE'])).first()

@@ -14,6 +14,7 @@ import os
 import helper.date_ist as date_ist
 import random
 from strategy.ssl import check_high_break, check_low_break
+from command.entry import reenter_opposite_direction
 import helper.pnl as pnl
 from strategy.ssl import check_ssl_long, check_ssl_short
 
@@ -128,6 +129,10 @@ def process_option_order(option_type):
                     in_trade_option.in_trade = False
                     in_trade_option.active_side = None
                     db.session.commit()
+
+                    if loss_recovered < 0:
+                        opp_option_type = 'CE' if option_type == 'PE' else 'PE'
+                        reenter_opposite_direction(opp_option_type)
                 else:
                     tp_order = cancel_tp_order(angel_obj, in_trade_option, option_type)
                     discord.send_alert('cascadeoptions',
@@ -168,6 +173,9 @@ def process_option_order(option_type):
 
                         if loss_recovered > 0:
                             mark_recover_fees_and_loss(profit=loss_recovered)
+                        else:
+                            opp_option_type = 'CE' if option_type == 'PE' else 'PE'
+                            reenter_opposite_direction(opp_option_type)
 
 
 def create_order_entry(in_trade_option, exchange_order_id, price, lot, trade_charge, side, type, status,
