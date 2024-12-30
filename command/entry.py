@@ -198,6 +198,7 @@ def create_tp_order(angel_obj, in_trade_option, price, lot, side, is_demo):
     if order_detail is not None:
         tp_order = Orders(
             symbol=in_trade_option.symbol,
+            index=in_trade_option.name,
             token=in_trade_option.instrument_token,
             order_link_id=in_trade_option.order_link_id,
             exchange=in_trade_option.exchange,
