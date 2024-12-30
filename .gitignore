@@ -172,3 +172,7 @@ cython_debug/
 
 .idea
 config.py
+best3min-live.db
+angel_jwt.txt
+angel_refresh.txt
+angelobj.txt
