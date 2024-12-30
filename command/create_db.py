@@ -23,7 +23,7 @@ def restart(ctx):
     db.drop_all()
     click.echo('Database deleted successfully!')
     ctx.invoke(create_db)
-    create_achievement(100, 1, investment=0)
+    ctx.invoke(create_achievement, ['100', '1', '0'])
     ctx.invoke(fetch_option_token)
     ctx.invoke(update_near_token)
 
