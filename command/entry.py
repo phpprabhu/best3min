@@ -61,25 +61,15 @@ def check_entry():
                 return
             print('Fetching options of index: ' + index.name)
             angel_obj = angel.get_angel_obj()
-            timeframe = '3m'
-            [nse_interval, nse_max_days_per_interval, is_custom_interval] = angel.get_angel_timeframe_details(timeframe)
-            df_index = angel.get_historical_data(angel_obj, index.token, timeframe, nse_interval, 750)
-            df_index['timestamp'] = pd.to_datetime(df_index['timestamp'])
+            df_index = angel.get_3min_olhcv(angel_obj, index)
 
-            # Remove the delta for current date
-            today = (pd.Timestamp.now() - pd.Timedelta(days=2)).date()
-
-            filtered_df = df_index[df_index['timestamp'].dt.date == today]
-
-            # Remove the first 2 rows
-            filtered_df = filtered_df.iloc[2:].reset_index(drop=True)
-
-            print(filtered_df)
+            print(df_index)
 
             if check_high_break(df_index):
                 print('CE Trade')
                 atm_strike = round_to_nearest(df_index.iloc[-1]['close'], index.option_sizing)
                 process_option_trade(angel_obj, index, atm_strike, 'CE')
+                return
 
             if check_low_break(df_index):
                 print('PE Trade')

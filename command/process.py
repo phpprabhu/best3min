@@ -13,6 +13,7 @@ import shutil
 import os
 import helper.date_ist as date_ist
 import random
+from strategy.ssl import check_high_break, check_low_break
 import helper.pnl as pnl
 from strategy.ssl import check_ssl_long, check_ssl_short
 
@@ -88,17 +89,22 @@ def process_option_order(option_type):
 
     if in_trade_option:
         angel_obj = angel.get_angel_obj()
-        olhcv = angel.get_option_olhcv(in_trade_option.exchange, in_trade_option.instrument_token)
-        if in_trade_option.active_side == "BUY":
-            tp_order = get_tp_order(in_trade_option, option_type)
-            if tp_order is None:
-                discord.send_alert('cascadeoptions',
-                                   f"There is {option_type} trade without TP order | {in_trade_option.symbol}({in_trade_option.instrument_token}) | order_ink_id: {in_trade_option.order_link_id}")
-            else:
-                if handle_tp_order(angel_obj, in_trade_option, tp_order, olhcv):
-                    return False
 
-            if olhcv.iloc[-1]['low'] < olhcv.iloc[0]['low']:
+        tp_order = get_tp_order(in_trade_option, option_type)
+
+        timeframe = '3m'
+        [nse_interval, nse_max_days_per_interval, is_custom_interval] = angel.get_angel_timeframe_details(timeframe)
+        olhcv = angel.get_historical_data(angel_obj, in_trade_option.instrument_token, timeframe, nse_interval, 3, "NFO")
+        if tp_order is None:
+            discord.send_alert('cascadeoptions',
+                               f"There is {option_type} trade without TP order | {in_trade_option.symbol}({in_trade_option.instrument_token}) | order_ink_id: {in_trade_option.order_link_id}")
+        else:
+            if handle_tp_order(angel_obj, in_trade_option, tp_order, olhcv):
+                return False
+
+            index = Indexes.query.filter_by(name=in_trade_option.name).first()
+            df_index = angel.get_3min_olhcv(angel_obj, index)
+            if (option_type == 'PE' and check_high_break(df_index)) or (option_type == 'CE' and check_low_break(df_index)):
                 if tp_order.is_demo:
                     if tp_order is not None:
                         tp_order.status = "CANCELLED"

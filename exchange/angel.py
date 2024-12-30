@@ -354,6 +354,19 @@ def get_order_status(angel_obj, order_id):
         return None
 
 
+def get_3min_olhcv(angel_obj, index):
+    timeframe = '3m'
+    [nse_interval, nse_max_days_per_interval, is_custom_interval] = get_angel_timeframe_details(timeframe)
+    df_index = get_historical_data(angel_obj, index.token, timeframe, nse_interval, 750)
+    df_index['timestamp'] = pd.to_datetime(df_index['timestamp'])
+    # Remove the delta for current date
+    today = (pd.Timestamp.now() - pd.Timedelta(days=2)).date()
+    filtered_df = df_index[df_index['timestamp'].dt.date == today]
+    # Remove the first 2 rows
+    filtered_df = filtered_df.iloc[2:].reset_index(drop=True)
+    return filtered_df
+
+
 def round_down(x, a):
     return math.floor(x / a) * a
 
