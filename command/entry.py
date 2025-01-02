@@ -13,6 +13,7 @@ from strategy.ssl import check_high_break, check_low_break
 import helper.date_ist as date_ist
 import helper.pnl as pnl
 import random
+from sqlalchemy import func
 
 
 def calculate_all_trade_charges(angel_obj, order_params):
@@ -59,6 +60,12 @@ def check_entry():
                 Orders.created >= datetime.combine(today, datetime.min.time())).count()
             if order_count >= 3:
                 return
+
+            dci_earnings = DciEarnings.query.filter(DciEarnings.status == 'ACHIEVED').filter(func.date(DciEarnings.updated) == today).first()
+            if dci_earnings:
+                print('Trade - Done for today: ' + index.name)
+                return
+
             print('Fetching options of index: ' + index.name)
             angel_obj = angel.get_angel_obj()
             df_index = angel.get_3min_olhcv(angel_obj, index)

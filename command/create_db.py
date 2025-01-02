@@ -75,7 +75,7 @@ def create_db():
                       exp_day='fri', topic="3.99919000", exchange="BFO", option_sizing=100)
     db.session.add(indexes)
 
-    trade_settings = TradeSettings(tp_percentage=20, sl_percentage=10, risk_percentage=1, lot=1, demo=1)
+    trade_settings = TradeSettings(tp_percentage=20, sl_percentage=10, risk_percentage=1, lot=1, demo=0)
     db.session.add(trade_settings)
 
     loss = Loss(ce_loss=0, pe_loss=0)

@@ -1,4 +1,5 @@
 scp root@172.105.47.214:/root/best3min/best3minapp/best3min.db best3min-live.db
+scp best3min-live.db root@172.105.47.214:/root/best3min/best3minapp/best3min.db
 
 
 nohup flask start_processing > log/process.log 2>&1 & echo $! > process/check.pid

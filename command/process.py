@@ -17,6 +17,7 @@ from strategy.ssl import check_high_break, check_low_break
 from command.entry import reenter_opposite_direction
 import helper.pnl as pnl
 from strategy.ssl import check_ssl_long, check_ssl_short
+from sqlalchemy import func
 
 retries = 0
 
@@ -74,6 +75,14 @@ def process_option_orders():
 
 @click.command(name='test-process')
 def test_process():
+    today = date.today()
+    print(today)
+    dci_earnings = DciEarnings.query.filter(DciEarnings.status == 'ACHIEVED').filter(func.date(DciEarnings.updated) == today).first()
+    print(dci_earnings)
+
+    if dci_earnings:
+        print('Trade - Done for today: ')
+    return
     angel_obj = angel.get_angel_obj()
     print(angel_obj.rmsLimit()['data'])
     profile = angel_obj.rmsLimit()['data']
@@ -175,6 +184,13 @@ def process_option_order(option_type):
                             mark_recover_fees_and_loss(profit=loss_recovered)
                         else:
                             opp_option_type = 'CE' if option_type == 'PE' else 'PE'
+                            today = date.today()
+                            dci_earnings = DciEarnings.query.filter(DciEarnings.status == 'ACHIEVED').filter(func.date(DciEarnings.updated) == today).first()
+
+                            if dci_earnings:
+                                print('Trade - Done for today: ' + index.name)
+                                return
+
                             reenter_opposite_direction(opp_option_type)
 
 
