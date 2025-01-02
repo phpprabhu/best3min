@@ -47,7 +47,7 @@ def fetch_option_token():
             option_exists = Options.query.filter_by(instrument_token=option_data.token).first()
 
             if not option_exists:
-                if option_data.expiry <= last_wednesday_or_next_month():
+                if option_data.expiry <= last_thursday_or_next_month():
                     option = Options(symbol=option_data.symbol, name=option_data['name'],
                                      instrument_token=int(option_data.token),
                                      exchange_token=0,
@@ -125,7 +125,7 @@ def update_near_token():
 from datetime import datetime, timedelta
 
 
-def get_last_wednesday(year, month):
+def get_last_thursday(year, month):
     # Get the last day of the given month
     if month == 12:
         next_month = datetime(year + 1, 1, 1)
@@ -134,18 +134,18 @@ def get_last_wednesday(year, month):
     last_day_of_month = next_month - timedelta(days=1)
 
     # Find the last Wednesday
-    while last_day_of_month.weekday() != 2:  # 2 represents Wednesday
+    while last_day_of_month.weekday() != 3:  # 3 represents Thursday
         last_day_of_month -= timedelta(days=1)
 
     return last_day_of_month
 
 
-def last_wednesday_or_next_month():
+def last_thursday_or_next_month():
     today = datetime.today()
     year, month = today.year, today.month
 
     # Get the last Wednesday of the current month
-    last_wednesday = get_last_wednesday(year, month)
+    last_wednesday = get_last_thursday(year, month)
 
     # If today is after the last Wednesday, calculate for the next month
     if today > last_wednesday:
@@ -154,7 +154,7 @@ def last_wednesday_or_next_month():
             month = 1
         else:
             month += 1
-        last_wednesday = get_last_wednesday(year, month)
+        last_wednesday = get_last_thursday(year, month)
 
     return last_wednesday
 

@@ -75,14 +75,6 @@ def process_option_orders():
 
 @click.command(name='test-process')
 def test_process():
-    today = date.today()
-    print(today)
-    dci_earnings = DciEarnings.query.filter(DciEarnings.status == 'ACHIEVED').filter(func.date(DciEarnings.updated) == today).first()
-    print(dci_earnings)
-
-    if dci_earnings:
-        print('Trade - Done for today: ')
-    return
     angel_obj = angel.get_angel_obj()
     print(angel_obj.rmsLimit()['data'])
     profile = angel_obj.rmsLimit()['data']
@@ -342,12 +334,12 @@ def handle_tp_order(angel_obj, in_trade_option, tp_order, olhcv):
             db.session.commit()
 
             # Calculate fees
-            # trade_charge = calculate_trade_charge(angel_obj, in_trade_option, tp_order.quantity,
-            #                                       tp_order_detail['averageprice'], "SELL")
+            trade_charge = calculate_trade_charge(angel_obj, in_trade_option, tp_order.quantity,
+                                                  tp_order_detail['averageprice'], "SELL")
 
             discord.send_alert('cascadeoptions', f"Loss recovered: '{tp_order.symbol}' | Lot: {tp_order.lot}")
 
-            # tp_order.fees = trade_charge
+            tp_order.fees = trade_charge
             tp_order.fees_need_recovery = tp_order.fees
             db.session.commit()
 
