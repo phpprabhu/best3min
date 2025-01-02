@@ -92,7 +92,7 @@ class Orders(db.Model):
     order_type = db.Column(db.String(15), nullable=True)  # TP / SL / MAIN
     balance_before_trade = db.Column(db.Float, default=0, nullable=False)
     balance_after_trade = db.Column(db.Float, default=0, nullable=False)
-    is_demo = db.Column(db.Integer, default=1, nullable=False)
+    is_demo = db.Column(db.Integer, default=0, nullable=False)
     status = db.Column(db.String(500), nullable=True)  # in-trade / rejected / open / complete / cancelled
     status_reason = db.Column(db.String(1000), nullable=True)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
