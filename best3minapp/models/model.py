@@ -15,14 +15,14 @@ class Indexes(db.Model):
     token = db.Column(db.Integer, nullable=True)
     enabled = db.Column(db.Boolean, default=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class Balance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     balance = db.Column(db.Float, default=0, nullable=False)
     when = db.Column(db.String(50), nullable=False)     # FAR / ALL-OPTIONS / AFTER-NEW-ORDER /AFTER-SL
-    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class DciEarnings(db.Model):
@@ -32,7 +32,7 @@ class DciEarnings(db.Model):
     earnings = db.Column(db.Float, default=0, nullable=False)
     partial = db.Column(db.Float, default=0, nullable=False)
     status = db.Column(db.String(50), default='NOT-ACHIEVED', nullable=False) # NOT-ACHIEVED / ACHIEVED / PARTIAL
-    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class Options(db.Model):
@@ -55,7 +55,7 @@ class Options(db.Model):
     atm = db.Column(db.Boolean, default=False)
     order_link_id = db.Column(db.String(100), nullable=True)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class OptionCircuit(db.Model):
@@ -64,7 +64,7 @@ class OptionCircuit(db.Model):
     upper_circuit = db.Column(db.Integer, default=0, nullable=True)
     lower_circuit = db.Column(db.Integer, default=0, nullable=True)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class Orders(db.Model):
@@ -96,7 +96,7 @@ class Orders(db.Model):
     status = db.Column(db.String(500), nullable=True)  # in-trade / rejected / open / complete / cancelled
     status_reason = db.Column(db.String(1000), nullable=True)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class TradeSettings(db.Model):

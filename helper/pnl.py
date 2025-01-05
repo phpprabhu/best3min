@@ -13,6 +13,29 @@ import os
 import helper.date_ist as date_ist
 
 
+def update_dci_earning(earning):
+    if earning <= 0:
+        return
+
+    not_achieved_earnings = DciEarnings.query.filter_by(status='NOT-ACHIEVED').order_by(DciEarnings.day).all()
+
+    for not_achieved_earning in not_achieved_earnings:
+        remaining_earning = earning - not_achieved_earning.partial - not_achieved_earning.earnings
+        if remaining_earning >= 0:
+            print('achieved')
+            not_achieved_earning.status = 'ACHIEVED'
+            discord.send_alert('cascadeoptions', f"Achieved Day: {not_achieved_earning.day}")
+            earning = remaining_earning
+            continue
+        else:
+            print('partial')
+            not_achieved_earning.partial = earning
+            discord.send_alert('cascadeoptions', f"Remaining Earning: {not_achieved_earning.partial}")
+            break
+
+    db.session.commit()
+
+
 def calculate_and_store_pnl(angel_obj, order, option_type):
     profile = angel_obj.rmsLimit()['data']
     fund_available = float(profile['utilisedpayout'])

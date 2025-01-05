@@ -126,6 +126,7 @@ def process_option_order(option_type):
 
                     if loss_recovered > 0:
                         mark_recover_fees_and_loss(profit=loss_recovered)
+                        pnl.update_dci_earning(loss_recovered)
 
                     in_trade_option.in_trade = False
                     in_trade_option.active_side = None
@@ -174,6 +175,7 @@ def process_option_order(option_type):
 
                         if loss_recovered > 0:
                             mark_recover_fees_and_loss(profit=loss_recovered)
+                            pnl.update_dci_earning(loss_recovered)
                         else:
                             opp_option_type = 'CE' if option_type == 'PE' else 'PE'
                             today = date.today()
@@ -346,6 +348,8 @@ def handle_tp_order(angel_obj, in_trade_option, tp_order, olhcv):
             profit = get_tp_profit(tp_order)
 
             mark_recover_fees_and_loss(profit)
+
+            pnl.update_dci_earning(profit)
 
             return True
     return False
