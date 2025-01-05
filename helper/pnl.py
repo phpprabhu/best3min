@@ -20,7 +20,7 @@ def update_dci_earning(earning):
     not_achieved_earnings = DciEarnings.query.filter_by(status='NOT-ACHIEVED').order_by(DciEarnings.day).all()
 
     for not_achieved_earning in not_achieved_earnings:
-        remaining_earning = earning - not_achieved_earning.partial - not_achieved_earning.earnings
+        remaining_earning = earning + not_achieved_earning.partial - not_achieved_earning.earnings
         if remaining_earning >= 0:
             print('achieved')
             not_achieved_earning.status = 'ACHIEVED'
